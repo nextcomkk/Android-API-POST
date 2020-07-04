@@ -15,8 +15,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class APIService {
-//    public static final String BASE_URL = "https://nxlinememtest.azurewebsites.net/";
-    public static final String BASE_URL = "http://192.168.10.109:3000/";
+    public static final String BASE_URL = "https://nxlinememtest.azurewebsites.net/";
 
     public APIService() {
     }
