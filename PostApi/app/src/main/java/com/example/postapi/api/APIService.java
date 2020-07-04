@@ -31,7 +31,7 @@ public class APIService {
             .build();
 
     static Gson gson = new GsonBuilder()
-            .setDateFormat("yyyy-MM-dd HH:mm:ss'Z'")
+//            .setDateFormat("yyyy-MM-dd HH:mm:ss'Z'")
             .setLenient()
             .create();
 

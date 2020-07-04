@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "set end point", Toast.LENGTH_LONG).show();
             return;
         }
-        Toast.makeText(getApplicationContext(), endpoint, Toast.LENGTH_LONG).show();
         APIInterface apiInterface = APIService.createService(APIInterface.class);
         Request request = new Request(userid);
         Call<Response> call = apiInterface.getPoint(endpoint, request);
