@@ -71,17 +71,16 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "set end point", Toast.LENGTH_LONG).show();
             return;
         }
-        APIInterface apiInterface = APIService.createService(APIInterface.class);
-        Request request = new Request(userid);
+        APIInterface apiInterface = APIService.createService(APIInterface.class,"BtYJvqFVAaenQETxkvyY");
+        Request request = new Request(userid,"p");
         Call<Response> call = apiInterface.getPoint(endpoint, request);
         call.enqueue(new Callback<Response>() {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Log.d("test", String.valueOf(response.body()));
                     Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
-                    intent.putExtra(getString(R.string.NAME), response.body().getUsername());
-                    intent.putExtra(getString(R.string.POINT), response.body().getPoint());
+                    intent.putExtra(getString(R.string.NAME), response.body().getUser_lastname());
+                    intent.putExtra(getString(R.string.POINT), response.body().getUser_hold_point());
                     startActivity(intent);
                 }
 

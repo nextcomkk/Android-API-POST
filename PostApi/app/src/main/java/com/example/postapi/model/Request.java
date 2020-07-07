@@ -1,9 +1,11 @@
 package com.example.postapi.model;
 
 public class Request {
-    String userid;
+    String nonce;
+    String mode;
 
-    public Request(String userid) {
-        this.userid = userid;
+    public Request(String nonce, String mode) {
+        this.nonce = nonce;
+        this.mode = mode;
     }
 }
