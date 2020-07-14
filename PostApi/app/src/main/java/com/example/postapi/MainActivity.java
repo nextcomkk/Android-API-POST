@@ -20,6 +20,9 @@ import com.example.postapi.api.APIInterface;
 import com.example.postapi.api.APIService;
 import com.example.postapi.model.Request;
 import com.example.postapi.model.Response;
+import com.google.gson.JsonObject;
+
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -88,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
     }
 
-    void getPoint(String userid) {
+    void getPoint(String request) {
         String endpoint = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getResources().getString(R.string.ENDPOINNT), "");
         String auth = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getResources().getString(R.string.AUTH), "");
         if (endpoint.isEmpty()) {
@@ -96,8 +99,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         APIInterface apiInterface = APIService.createService(APIInterface.class,auth);
-        Request request = new Request(userid,"p");
-        Call<Response> call = apiInterface.getPoint(endpoint, request);
+        Call<Response> call = apiInterface.getPoint(endpoint, generateFromString(request));
         call.enqueue(new Callback<Response>() {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
@@ -115,5 +117,20 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("test", String.valueOf(t));
             }
         });
+    }
+
+    JsonObject generateFromString(String string) {
+        JsonObject jsonObject = new JsonObject();
+        String[] parameters = string.split("&");
+        for (String s : parameters) {
+            String[] parameter = s.split("=");
+            if (parameter[0].equals("point")) {
+                jsonObject.addProperty(parameter[0],Integer.parseInt(parameter[1]));
+            } else {
+                jsonObject.addProperty(parameter[0], parameter[1]);
+            }
+
+        }
+        return jsonObject;
     }
 }

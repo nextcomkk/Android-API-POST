@@ -2,6 +2,7 @@ package com.example.postapi.api;
 
 import com.example.postapi.model.Request;
 import com.example.postapi.model.Response;
+import com.google.gson.JsonObject;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -20,6 +21,6 @@ public interface APIInterface {
     @POST()
     Call<Response> getPoint(
             @Url String url,
-            @Body Request request
+            @Body JsonObject request
             );
 }
