@@ -11,6 +11,7 @@ import android.widget.EditText;
 public class SettingActivity extends AppCompatActivity {
     EditText endpointEditText;
     EditText authorizationEditText;
+    EditText delayEditText;
     Button saveButton;
 
     @Override
@@ -20,6 +21,7 @@ public class SettingActivity extends AppCompatActivity {
 
         endpointEditText = findViewById(R.id.endpointEditText);
         authorizationEditText = findViewById(R.id.authorizationEditText);
+        delayEditText = findViewById(R.id.delayEditText);
         saveButton = findViewById(R.id.saveButton);
 
         String endpoint = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getResources().getString(R.string.ENDPOINNT), "");
@@ -27,6 +29,9 @@ public class SettingActivity extends AppCompatActivity {
 
         String auth = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getResources().getString(R.string.AUTH), "");
         authorizationEditText.setText(auth);
+
+        int delay = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getInt(getResources().getString(R.string.DELAY), 3);
+        delayEditText.setText(String.valueOf(delay));
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,6 +41,10 @@ public class SettingActivity extends AppCompatActivity {
 
                 String newAuth = authorizationEditText.getText().toString();
                 PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString(getResources().getString(R.string.AUTH), newAuth).apply();
+
+                String newDelay = delayEditText.getText().toString();
+                PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putInt(getResources().getString(R.string.DELAY), Integer.parseInt(newDelay)).apply();
+
                 onBackPressed();
             }
         });

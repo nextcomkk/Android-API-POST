@@ -52,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
         editText = findViewById(R.id.endpointEditText);
         postButton = findViewById(R.id.button);
 
+        String userid = "yZ2Xl3WdihZMQ4sF4IT01HJIBl5yJCPlrz2Ppg09iC9ZSTk99aI2Pmq0ptw98xEPBNvrbNqYRTSyHTZRb5zI4WGeibA5U1bU8uyey27vUTl5D1tGEO7c85UOgqianueZS7AmvVti7dXlLLKqR3Bf49WcKT8iU7iAOvmGBhkSvYe4hIdEP1st295TlxMMXkya4xGpzeZKTSUf414bPDC3OZIPADueEI5kAeaUcXfKcSKjoZYuCL6uRFvfY1Z6TUf";
+        Log.d("test", userid);
+        editText.setText(userid);
 
         editText.addTextChangedListener(new TextWatcher() {
             @Override
