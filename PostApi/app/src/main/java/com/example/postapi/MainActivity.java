@@ -1,7 +1,5 @@
 package com.example.postapi;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -16,13 +14,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.postapi.api.APIInterface;
 import com.example.postapi.api.APIService;
-import com.example.postapi.model.Request;
 import com.example.postapi.model.Response;
 import com.google.gson.JsonObject;
-
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
