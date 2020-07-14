@@ -3,4 +3,5 @@
     <string name="NAME">name</string>
     <string name="POINT">point</string>
     <string name="ENDPOINNT">endpoint</string>
+    <string name="settings">設定</string>
 </resources>

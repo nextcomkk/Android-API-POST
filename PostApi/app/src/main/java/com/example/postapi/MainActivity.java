@@ -5,7 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,19 +21,31 @@ import com.example.postapi.api.APIService;
 import com.example.postapi.model.Request;
 import com.example.postapi.model.Response;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 
 public class MainActivity extends AppCompatActivity {
     private EditText editText;
     private Button postButton;
-    private Button settingButton;
 
     String endpoint;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_settings) {
+            Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,26 +53,31 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         editText = findViewById(R.id.editText);
         postButton = findViewById(R.id.button);
-        settingButton = findViewById(R.id.settingButton);
+
+
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Log.d("aaa", String.valueOf(s.toString().contains("\n")));
+            }
+        });
 
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("test", "clicked");
                 String userid = editText.getText().toString();
-                try {
-                    getPoint(userid);
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        settingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
-                startActivity(intent);
+                getPoint(userid);
             }
         });
     }
@@ -66,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         endpoint = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getResources().getString(R.string.ENDPOINNT), "");
     }
 
-    void getPoint(String userid) throws UnsupportedEncodingException {
+    void getPoint(String userid) {
         if (endpoint.isEmpty()) {
             Toast.makeText(getApplicationContext(), "set end point", Toast.LENGTH_LONG).show();
             return;
