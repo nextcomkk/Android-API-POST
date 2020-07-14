@@ -2,6 +2,7 @@
     <string name="app_name">PostApi</string>
     <string name="NAME">name</string>
     <string name="POINT">point</string>
+    <string name="AUTH">auth</string>
     <string name="ENDPOINNT">endpoint</string>
     <string name="settings">設定</string>
 </resources>

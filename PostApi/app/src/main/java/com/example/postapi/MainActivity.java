@@ -28,8 +28,6 @@ public class MainActivity extends AppCompatActivity {
     private EditText editText;
     private Button postButton;
 
-    String endpoint;
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -51,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        editText = findViewById(R.id.editText);
+        editText = findViewById(R.id.endpointEditText);
         postButton = findViewById(R.id.button);
 
 
@@ -85,15 +83,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        endpoint = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getResources().getString(R.string.ENDPOINNT), "");
     }
 
     void getPoint(String userid) {
+        String endpoint = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getResources().getString(R.string.ENDPOINNT), "");
+        String auth = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getResources().getString(R.string.AUTH), "");
         if (endpoint.isEmpty()) {
             Toast.makeText(getApplicationContext(), "set end point", Toast.LENGTH_LONG).show();
             return;
         }
-        APIInterface apiInterface = APIService.createService(APIInterface.class,"BtYJvqFVAaenQETxkvyY");
+        APIInterface apiInterface = APIService.createService(APIInterface.class,auth);
         Request request = new Request(userid,"p");
         Call<Response> call = apiInterface.getPoint(endpoint, request);
         call.enqueue(new Callback<Response>() {
