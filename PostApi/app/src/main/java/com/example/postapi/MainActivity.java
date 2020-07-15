@@ -26,7 +26,6 @@ import retrofit2.Callback;
 
 public class MainActivity extends AppCompatActivity {
     private EditText editText;
-    private Button postButton;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -50,11 +49,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         editText = findViewById(R.id.endpointEditText);
-        postButton = findViewById(R.id.button);
 
-        String userid = "yZ2Xl3WdihZMQ4sF4IT01HJIBl5yJCPlrz2Ppg09iC9ZSTk99aI2Pmq0ptw98xEPBNvrbNqYRTSyHTZRb5zI4WGeibA5U1bU8uyey27vUTl5D1tGEO7c85UOgqianueZS7AmvVti7dXlLLKqR3Bf49WcKT8iU7iAOvmGBhkSvYe4hIdEP1st295TlxMMXkya4xGpzeZKTSUf414bPDC3OZIPADueEI5kAeaUcXfKcSKjoZYuCL6uRFvfY1Z6TUf";
-        Log.d("test", userid);
-        editText.setText(userid);
 
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -70,15 +65,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 Log.d("aaa", String.valueOf(s.toString().contains("\n")));
-            }
-        });
-
-        postButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("test", "clicked");
-                String userid = editText.getText().toString();
-                getPoint(userid);
+                if (s.toString().contains("\n")) {
+                    String body = s.toString().replace("\n", "");
+                    getPoint(body);
+                    editText.setText("");
+                }
             }
         });
     }
@@ -86,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        editText.requestFocus();
     }
 
     void getPoint(String request) {
@@ -95,8 +87,13 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "set end point", Toast.LENGTH_LONG).show();
             return;
         }
-        APIInterface apiInterface = APIService.createService(APIInterface.class,auth);
-        Call<Response> call = apiInterface.getPoint(endpoint, generateFromString(request));
+        APIInterface apiInterface = APIService.createService(APIInterface.class, auth);
+        JsonObject requestObject = generateFromString(request);
+        if (requestObject == null) {
+            Log.e("Request", "Jsonを作成できませんでした。");
+            return;
+        }
+        Call<Response> call = apiInterface.getPoint(endpoint, requestObject);
         call.enqueue(new Callback<Response>() {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
@@ -121,8 +118,11 @@ public class MainActivity extends AppCompatActivity {
         String[] parameters = string.split("&");
         for (String s : parameters) {
             String[] parameter = s.split("=");
+            if (parameter.length < 2) {
+                return null;
+            }
             if (parameter[0].equals("point")) {
-                jsonObject.addProperty(parameter[0],Integer.parseInt(parameter[1]));
+                jsonObject.addProperty(parameter[0], Integer.parseInt(parameter[1]));
             } else {
                 jsonObject.addProperty(parameter[0], parameter[1]);
             }
