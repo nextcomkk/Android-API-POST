@@ -97,11 +97,13 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<Response>() {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                if (response.isSuccessful() && response.body() != null) {
+                if (response.isSuccessful() && response.body() != null && response.body().getUserid() != null) {
                     Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
                     intent.putExtra(getString(R.string.NAME), response.body().getUser_lastname());
                     intent.putExtra(getString(R.string.POINT), response.body().getUser_hold_point());
                     startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(), "QRコードのデータが取得できませんでしたので再度お試しください。", Toast.LENGTH_LONG).show();
                 }
 
             }
