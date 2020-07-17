@@ -9,8 +9,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -50,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         editText = findViewById(R.id.endpointEditText);
 
+        String title = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getResources().getString(R.string.TITLE), "");
+        getSupportActionBar().setTitle(title);
 
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                Log.d("aaa", String.valueOf(s.toString().contains("\n")));
+                Log.d("input", s.toString());
                 if (s.toString().contains("\n")) {
                     String body = s.toString().replace("\n", "");
                     getPoint(body);
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         editText.requestFocus();
     }
 
-    void getPoint(String request) {
+    void getPoint(final String request) {
         String endpoint = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getResources().getString(R.string.ENDPOINNT), "");
         String auth = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getResources().getString(R.string.AUTH), "");
         if (endpoint.isEmpty()) {
@@ -97,13 +97,18 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<Response>() {
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                if (response.isSuccessful() && response.body() != null && response.body().getUserid() != null) {
-                    Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
-                    intent.putExtra(getString(R.string.NAME), response.body().getUser_lastname());
-                    intent.putExtra(getString(R.string.POINT), response.body().getUser_hold_point());
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(getApplicationContext(), "QRコードのデータが取得できませんでしたので再度お試しください。", Toast.LENGTH_LONG).show();
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.e("!!!!!!!!", response.body().getResult());
+                    if(response.body().getResult().equals("error")) {
+                        Intent intent = new Intent(getApplicationContext(), ErrorActivity.class);
+                        intent.putExtra(getString(R.string.NAME), response.body().getMessage());
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
+                        intent.putExtra(getString(R.string.NAME), response.body().getData().getUser_lastname());
+                        intent.putExtra(getString(R.string.POINT), response.body().getData().getUser_hold_point());
+                        startActivity(intent);
+                    }
                 }
 
             }

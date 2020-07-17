@@ -1,60 +1,38 @@
 package com.example.postapi.model;
 
-import java.util.Date;
-
 public class Response {
-    private String userid;
-    private String user_lastname;
-    private int user_hold_point;
-    private Date user_last_visit_datetime;
+    private Data data;
+    private String result;
+    private String message;
 
-    public Response(String userid, String user_lastname, int user_hold_point, Date user_last_visit_datetime) {
-        this.userid = userid;
-        this.user_lastname = user_lastname;
-        this.user_hold_point = user_hold_point;
-        this.user_last_visit_datetime = user_last_visit_datetime;
+    public Response(Data data, String result, String message) {
+        this.data = data;
+        this.result = result;
+        this.message = message;
     }
 
-
-    public String getUserid() {
-        return userid;
+    public Data getData() {
+        return data;
     }
 
-    public void setUserid(String userid) {
-        this.userid = userid;
+    public void setData(Data data) {
+        this.data = data;
     }
 
-    public String getUser_lastname() {
-        return user_lastname;
+    public String getResult() {
+        return result;
     }
 
-    public void setUser_lastname(String user_lastname) {
-        this.user_lastname = user_lastname;
+    public void setResult(String result) {
+        this.result = result;
     }
 
-    public int getUser_hold_point() {
-        return user_hold_point;
+    public String getMessage() {
+        return message;
     }
 
-    public void setUser_hold_point(int user_hold_point) {
-        this.user_hold_point = user_hold_point;
-    }
-
-    public Date getUser_last_visit_datetime() {
-        return user_last_visit_datetime;
-    }
-
-    public void setUser_last_visit_datetime(Date user_last_visit_datetime) {
-        this.user_last_visit_datetime = user_last_visit_datetime;
-    }
-
-    @Override
-    public String toString() {
-        return "Response{" +
-                "userid='" + userid + '\'' +
-                ", user_lastname='" + user_lastname + '\'' +
-                ", user_hold_point=" + user_hold_point +
-                ", user_last_visit_datetime=" + user_last_visit_datetime +
-                '}';
+    public void setMessage(String message) {
+        this.message = message;
     }
 }
+
