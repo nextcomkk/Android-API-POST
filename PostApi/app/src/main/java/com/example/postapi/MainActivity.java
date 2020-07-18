@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         JsonObject jsonObject = new JsonObject();
         String[] parameters = string.split("&");
         for (String s : parameters) {
-            String[] parameter = s.split("=");
+            String[] parameter = s.split(",");
             if (parameter.length < 2) {
                 return null;
             }
