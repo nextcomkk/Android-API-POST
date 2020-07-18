@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class SettingActivity extends AppCompatActivity {
+    EditText descriptionEditText;
     EditText endpointEditText;
     EditText authorizationEditText;
     EditText delayEditText;
@@ -19,10 +20,14 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
+        descriptionEditText = findViewById(R.id.descriptionEditText);
         endpointEditText = findViewById(R.id.endpointEditText);
         authorizationEditText = findViewById(R.id.authorizationEditText);
         delayEditText = findViewById(R.id.delayEditText);
         saveButton = findViewById(R.id.saveButton);
+
+        String description = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getResources().getString(R.string.DESCRIPTION), "");
+        descriptionEditText.setText(description);
 
         String endpoint = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getResources().getString(R.string.ENDPOINNT), "");
         endpointEditText.setText(endpoint);
@@ -36,6 +41,9 @@ public class SettingActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String newDescription = descriptionEditText.getText().toString();
+                PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString(getResources().getString(R.string.DESCRIPTION), newDescription).apply();
+
                 String newEndpoint = endpointEditText.getText().toString();
                 PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString(getResources().getString(R.string.ENDPOINNT), newEndpoint).apply();
 

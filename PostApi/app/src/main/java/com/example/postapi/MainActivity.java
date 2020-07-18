@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +25,8 @@ import retrofit2.Callback;
 
 public class MainActivity extends AppCompatActivity {
     private EditText editText;
+    private TextView descriptionTextView;
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -47,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         editText = findViewById(R.id.endpointEditText);
+        descriptionTextView = findViewById(R.id.descriptionTextView);
 
         String title = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getResources().getString(R.string.TITLE), "");
         getSupportActionBar().setTitle(title);
@@ -78,6 +82,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         editText.requestFocus();
+        String description = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getResources().getString(R.string.DESCRIPTION), "");
+
+        descriptionTextView.setText(description);
     }
 
     void getPoint(final String request) {
