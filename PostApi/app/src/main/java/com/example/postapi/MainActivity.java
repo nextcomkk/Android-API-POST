@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,15 +19,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.postapi.api.APIInterface;
 import com.example.postapi.api.APIService;
 import com.example.postapi.model.Response;
+import com.example.postapi.qrcode.BarcodeCaptureActivity;
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.vision.barcode.Barcode;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText editText;
     private TextView descriptionTextView;
-
+    private static final int RC_BARCODE_CAPTURE = 9001;
+    private static final String TAG = "BarcodeMain";
+    private TextView barcodeValue;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -46,44 +52,49 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.read_barcode) {
+            // launch barcode activity.
+            Intent intent = new Intent(this, BarcodeCaptureActivity.class);
+            startActivityForResult(intent, RC_BARCODE_CAPTURE);
+        }
+
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RC_BARCODE_CAPTURE) {
+            if (resultCode == CommonStatusCodes.SUCCESS) {
+                if (data != null) {
+                    Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
+                    getPoint(barcode.displayValue);
+                    Log.d(TAG, "Barcode read: " + barcode.displayValue);
+                } else {
+
+                    Log.d(TAG, "No barcode captured, intent data is null");
+                }
+            }
+        }
+        else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        barcodeValue = (TextView)findViewById(R.id.barcode_value);
         editText = findViewById(R.id.endpointEditText);
         descriptionTextView = findViewById(R.id.descriptionTextView);
-
+        findViewById(R.id.read_barcode).setOnClickListener(this);
         String title = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getResources().getString(R.string.TITLE), "");
         getSupportActionBar().setTitle(title);
-
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                Log.d("input", s.toString());
-                if (s.toString().contains("\n")) {
-                    String body = s.toString().replace("\n", "");
-                    getPoint(body);
-                    editText.setText("");
-                }
-            }
-        });
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        editText.requestFocus();
         String description = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getResources().getString(R.string.DESCRIPTION), "");
-
         descriptionTextView.setText(description);
     }
 
