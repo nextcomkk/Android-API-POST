@@ -15,17 +15,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ErrorActivity"></activity>
-        <activity android:name=".SettingActivity" />
-        <activity android:name=".DetailActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name="jp.co.nextcom.postapi.ErrorActivity"></activity>
+        <activity android:name="jp.co.nextcom.postapi.SettingActivity" />
+        <activity android:name="jp.co.nextcom.postapi.DetailActivity" />
+        <activity android:name="jp.co.nextcom.postapi.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".qrcode.BarcodeCaptureActivity"/>
+        <activity android:name="jp.co.nextcom.postapi.qrcode.BarcodeCaptureActivity"/>
     </application>
 
 </manifest>

@@ -7,11 +7,11 @@
     android:layout_height="wrap_content"
     android:keepScreenOn="true">
 
-  <com.example.postapi.qrcode.camera.CameraSourcePreview
+  <jp.co.nextcom.postapi.qrcode.camera.CameraSourcePreview
       android:id="@+id/preview"
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
 
-  </com.example.postapi.qrcode.camera.CameraSourcePreview>
+  </jp.co.nextcom.postapi.qrcode.camera.CameraSourcePreview>
 
 </LinearLayout>
