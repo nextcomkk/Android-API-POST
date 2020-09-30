@@ -28,11 +28,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private EditText editText;
     private TextView descriptionTextView;
     private static final int RC_BARCODE_CAPTURE = 9001;
     private static final String TAG = "BarcodeMain";
-    private TextView barcodeValue;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -53,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.read_barcode) {
+        if (v.getId() == R.id.descriptionTextView) {
             // launch barcode activity.
             Intent intent = new Intent(this, BarcodeCaptureActivity.class);
             startActivityForResult(intent, RC_BARCODE_CAPTURE);
@@ -83,12 +81,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        barcodeValue = (TextView)findViewById(R.id.barcode_value);
-        editText = findViewById(R.id.endpointEditText);
         descriptionTextView = findViewById(R.id.descriptionTextView);
-        findViewById(R.id.read_barcode).setOnClickListener(this);
         String title = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getResources().getString(R.string.TITLE), "");
         getSupportActionBar().setTitle(title);
+        descriptionTextView.setOnClickListener(this);
     }
 
     @Override
@@ -128,7 +124,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         startActivity(intent);
                     }
                 }
-
             }
 
             @Override
