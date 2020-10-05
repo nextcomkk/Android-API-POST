@@ -14,6 +14,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 
@@ -42,13 +44,15 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
     private CameraSource mCameraSource;
     private CameraSourcePreview mPreview;
 
+    private  boolean useBackcamera = false;
+
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.barcode_capture);
 
+        useBackcamera =  PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("useBackcamera", false);
         mPreview = (CameraSourcePreview) findViewById(R.id.preview);
-
         // Check for the camera permission before accessing the camera.  If the
         // permission is not granted yet, request permission.
         int rc = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
@@ -91,7 +95,7 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
                 new MultiProcessor.Builder<>(barcodeFactory).build());
 
         CameraSource.Builder builder = new CameraSource.Builder(getApplicationContext(), barcodeDetector)
-                .setFacing(CameraSource.CAMERA_FACING_BACK)
+                .setFacing(useBackcamera ? CameraSource.CAMERA_FACING_BACK : CameraSource.CAMERA_FACING_FRONT)
                 .setRequestedFps(15.0f);
         mCameraSource = builder.build();
 

@@ -23,9 +23,10 @@
         android:id="@+id/saveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="84dp"
         android:text="Save"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/delayEditText" />
 
@@ -97,4 +98,16 @@
         android:text="Home Description"
         app:layout_constraintStart_toStartOf="@+id/authorizationEditText"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Switch
+        android:id="@+id/cameraSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:switchMinWidth="70dp"
+        android:text="Back Camera"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="@+id/delayEditText"
+        app:layout_constraintTop_toBottomOf="@+id/delayEditText" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
